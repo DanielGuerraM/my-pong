@@ -16,6 +16,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 /** First screen of the application. Displayed after the application is created. */
 public class FirstScreen implements Screen {
+    private final Main game;
+    private int pointsToWin;
+
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Rectangle player, computer, ball;
@@ -25,6 +28,11 @@ public class FirstScreen implements Screen {
 
     private Texture whiteTexture;
     private Sound hitSound;
+
+    public FirstScreen(Main game, int pointsToWin) {
+        this.game = game;
+        this.pointsToWin = pointsToWin;
+    }
 
     @Override
     public void show() {
@@ -165,6 +173,11 @@ public class FirstScreen implements Screen {
         } else if(ball.x > 640) {
             playerScore++;
             resetBall();
+        }
+
+        if(playerScore >= pointsToWin || computerScore >= pointsToWin) {
+            String winner = playerScore >= pointsToWin ? "Jugador" : "IA";
+            game.setScreen(new VictoryScreen(game, winner));
         }
     }
 
